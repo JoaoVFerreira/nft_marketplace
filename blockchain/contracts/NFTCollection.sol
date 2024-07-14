@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 contract NFTCollection is ERC721URIStorage {
-  	uint private _tokenIds;
+  uint private _tokenIds;
 	address contractAddress; //marketplace
 	address owner;
 
@@ -15,7 +15,7 @@ contract NFTCollection is ERC721URIStorage {
 	}
 
 	function mint(string memory uri) public returns (uint) {
-		uint tokenId = _tokenIds++;
+		uint tokenId = ++_tokenIds;
 		_mint(msg.sender, tokenId);
 		_setTokenURI(tokenId, uri);
 		setApprovalForAll(contractAddress, true);
