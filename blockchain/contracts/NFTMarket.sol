@@ -38,7 +38,7 @@ contract NFTMarket is ReentrancyGuard {
         require(price > 0, "Price cannot be zero");
         require(msg.value == listingPrice, "Value must be equal to listing price");
 
-        uint itemId = _itemsCounter++;
+        uint itemId = ++_itemsCounter;
         MarketItems[itemId] = MarketItem(
             itemId, 
             nftContract,
@@ -65,7 +65,7 @@ contract NFTMarket is ReentrancyGuard {
         MarketItems[itemId].owner = payable(msg.sender);
         MarketItems[itemId].sold = true;
 
-        _itemsSold++;
+        ++_itemsSold;
         payable(owner).transfer(listingPrice);
     }
 
