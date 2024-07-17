@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "npx hardhat coverage"
+    "test": "npx hardhat coverage",
+    "deploy": "npx hardhat ignition deploy ignition/modules/deploy.ts --network polygonTestNet"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
