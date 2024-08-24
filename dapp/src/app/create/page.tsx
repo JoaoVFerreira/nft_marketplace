@@ -3,7 +3,7 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { useState } from "react";
-import type { NewNFT } from "@/services/Web3Service";
+import { type NewNFT, uploadAndCreate } from "@/services/Web3Service";
 
 function Create() {
 	const [nft, setNft] = useState<NewNFT>();
@@ -18,6 +18,17 @@ function Create() {
 			const file = ev.target.files[0];
 			setNft((prevState) => ({ ...prevState, image: file }));
 		}
+	}
+
+	function btnSubmitClick() {
+		if (!nft) return;
+		setMessage("Sending your NFT to blockchain...");
+		uploadAndCreate(nft)
+			.then((itemId) => {
+				setMessage("NFT created successfully!");
+				window.location.href = `/details/${itemId}`;
+			})
+			.catch((err) => setMessage(err.message));
 	}
 
 	return (
@@ -112,6 +123,7 @@ function Create() {
 								</div>
 								<button
 									type="button"
+									onClick={btnSubmitClick}
 									className="bg-gradient-to-t bg-primary-500 font-bold from-primary-500 hover:bg-primary-600 hover:from-primary-600 hover:to-primary-500 inline-block px-12 py-2 rounded text-white to-primary-400"
 								>
 									Submit
