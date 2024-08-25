@@ -6,7 +6,7 @@ import type { EventLog } from "ethers";
 
 const MARKETPLACE_ADDRESS = `${process.env.MARKETPLACE_ADDRESS}`;
 const COLLECTION_ADDRESS = `${process.env.COLLECTION_ADDRESS}`;
-const CHAIN_ID = Number.parseInt(`${process.env.CHAIN_ID}`);
+const CHAIN_ID = `${process.env.CHAIN_ID}`;
 
 export type NewNFT = {
 	name?: string;
@@ -54,7 +54,7 @@ async function getProvider() {
 	if (!accounts || !accounts.length) throw new Error("Wallet not permitted!");
 	await provider.send("wallet_switchEthereumChain", [
 		{
-			chainId: ethers.toBeHex(CHAIN_ID),
+			chainId: CHAIN_ID,
 		},
 	]);
 	return provider;
@@ -63,6 +63,8 @@ async function getProvider() {
 async function createItem(url: string, price: string): Promise<number> {
 	const provider = await getProvider();
 	const signer = await provider.getSigner();
+
+	// Mint NFT
 	const collectionContract = new ethers.Contract(
 		COLLECTION_ADDRESS,
 		NFTCollectionABI,
@@ -73,13 +75,13 @@ async function createItem(url: string, price: string): Promise<number> {
 	let eventLog = mintTxReceipt.logs[0] as EventLog;
 	const tokenId = Number(eventLog.args[2]);
 
+	// Create Market Item
 	const weiPrice = ethers.parseUnits(price, "ether");
 	const marketContract = new ethers.Contract(
 		MARKETPLACE_ADDRESS,
 		NFTMarketABI,
 		signer,
 	);
-
 	const listingPrice = (await marketContract.listingPrice()).toString();
 	const createTx = await marketContract.createMarketItem(
 		COLLECTION_ADDRESS,
@@ -89,6 +91,7 @@ async function createItem(url: string, price: string): Promise<number> {
 	);
 	const createTxReceipt: ethers.ContractTransactionReceipt =
 		await createTx.wait();
+
 	eventLog = createTxReceipt.logs.find(
 		(log) => (log as EventLog).eventName === "MarketItemCreated",
 	) as EventLog;

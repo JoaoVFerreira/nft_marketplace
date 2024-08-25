@@ -100,7 +100,7 @@ describe("NFTMarket", function () {
     // ACT && ASSERT
     await expect(
       nftMarket.createMarketItem(nftCollectionAddress, 1, auctionPrice)
-    ).to.be.revertedWith('Value must be equal to listing price');
+    ).to.be.revertedWith('Value must be equal listing price.');
   }) 
 
   it('Should throw when price is zero', async () => {
@@ -115,7 +115,7 @@ describe("NFTMarket", function () {
     // ACT && ASSERT
     await expect(
       nftMarket.createMarketItem(nftCollectionAddress, 1, auctionPrice, { value: listingPrice })
-    ).to.be.revertedWith('Price cannot be zero');
+    ).to.be.revertedWith('Price cannot be zero.');
   })
 
   it('Should throw when given price to buy nft is not enough', async () => {
@@ -130,6 +130,6 @@ describe("NFTMarket", function () {
     // ACT && ASSERT
     await expect(
       nftMarket.createMarketSale(nftCollectionAddress, 1)
-    ).to.be.revertedWith('Please submit the asking price in order to complete your purchase');
+    ).to.be.revertedWith('Please submit the asking price in order to complete purchase.');
   })
 })
