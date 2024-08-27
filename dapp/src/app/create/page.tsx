@@ -1,28 +1,31 @@
 "use client";
 
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import { useState } from "react";
+import Header from "@/components/header";
 import { type NewNFT, uploadAndCreate } from "@/services/Web3Service";
+import Footer from "@/components/footer";
 
 function Create() {
 	const [nft, setNft] = useState<NewNFT>();
 	const [message, setMessage] = useState<string>("");
 
-	function onInputChange(ev: React.ChangeEvent<HTMLInputElement>) {
-		setNft((prevState) => ({ ...prevState, [ev.target.id]: ev.target.value }));
+	function onInputChange(evt: React.ChangeEvent<HTMLInputElement>) {
+		setNft((prevState) => ({
+			...prevState,
+			[evt.target.id]: evt.target.value,
+		}));
 	}
 
-	function onFileChange(ev: React.ChangeEvent<HTMLInputElement>) {
-		if (ev.target.files?.length) {
-			const file = ev.target.files[0];
+	function onFileChange(evt: React.ChangeEvent<HTMLInputElement>) {
+		if (evt.target.files?.length) {
+			const file = evt.target.files[0];
 			setNft((prevState) => ({ ...prevState, image: file }));
 		}
 	}
 
 	function btnSubmitClick() {
 		if (!nft) return;
-		setMessage("Sending your NFT to blockchain...");
+		setMessage("Sending your NFT to blockchain...wait...");
 		uploadAndCreate(nft)
 			.then((itemId) => {
 				setMessage("NFT created successfully!");
@@ -57,7 +60,7 @@ function Create() {
 							</div>
 						</div>
 						<div>
-							<form action="">
+							<form>
 								<div className="mb-6">
 									<label
 										htmlFor="name"
@@ -67,10 +70,10 @@ function Create() {
 									</label>
 									<input
 										type="text"
-										value={nft?.name ?? ""}
-										onChange={onInputChange}
 										id="name"
-										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder:bg-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										value={nft?.name || ""}
+										onChange={onInputChange}
+										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 										required
 									/>
 								</div>
@@ -83,10 +86,10 @@ function Create() {
 									</label>
 									<input
 										type="text"
-										value={nft?.description ?? ""}
-										onChange={onInputChange}
 										id="description"
-										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder:bg-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										value={nft?.description || ""}
+										onChange={onInputChange}
+										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 										required
 									/>
 								</div>
@@ -95,14 +98,14 @@ function Create() {
 										htmlFor="price"
 										className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 									>
-										Price (MATIC - POL)
+										Price (MATIC)
 									</label>
 									<input
 										type="number"
-										value={nft?.price ?? ""}
-										onChange={onInputChange}
 										id="price"
-										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder:bg-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										value={nft?.price || ""}
+										onChange={onInputChange}
+										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 										required
 									/>
 								</div>
@@ -115,9 +118,9 @@ function Create() {
 									</label>
 									<input
 										type="file"
-										onChange={onFileChange}
 										id="image"
-										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder:bg-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										onChange={onFileChange}
+										className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 										required
 									/>
 								</div>
